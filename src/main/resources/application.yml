@@ -1,0 +1,42 @@
+micronaut:
+  application:
+    name: paymaster
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  security:
+    intercept-url-map:
+      - access: isAnonymous()
+        pattern: /swagger/**
+      - access: isAnonymous()
+        pattern: /swagger-ui/**
+    endpoints:
+      login:
+        enabled: false
+      logout:
+        enabled: false
+    redirect:
+      enabled: false
+  server:
+    netty:
+      access-logger:
+        enabled: true
+datasources:
+  default:
+    driverClassName: org.postgresql.Driver
+    db-type: postgresql
+    dialect: postgres
+    url: "jdbc:postgresql://localhost:5432/paymaster"
+    username: "paymaster"
+    password: "paymaster"
+    maximum-pool-size: 5
+    schema-generate: none
+netty:
+  default:
+    allocator:
+      max-order: 3

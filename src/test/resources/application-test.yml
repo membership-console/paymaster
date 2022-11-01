@@ -1,0 +1,8 @@
+datasources:
+  default:
+    driverClassName: org.postgresql.Driver
+    db-type: postgresql
+    url: "jdbc:postgresql://localhost:55432/paymaster"
+    username: "paymaster"
+    password: "paymaster"
+    schema-generate: none
