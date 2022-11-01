@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "paymaster"
+      POSTGRES_PASSWORD: "paymaster"
+      POSTGRES_DATABASE: "paymaster"
+      TZ: "Asia/Tokyo"
+      PGTZ: "Asia/Tokyo"
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+  db-test:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    ports:
+      - "55432:5432"
+    environment:
+      POSTGRES_USER: "paymaster"
+      POSTGRES_PASSWORD: "paymaster"
+      POSTGRES_DATABASE: "paymaster"
+      TZ: "Asia/Tokyo"
+      PGTZ: "Asia/Tokyo"
