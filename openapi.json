@@ -1,0 +1,345 @@
+{
+  "openapi": "3.0.0",
+  "x-stoplight": {
+    "id": "vqvssdjnowx3l"
+  },
+  "info": {
+    "title": "Paymaster",
+    "version": "1.0_SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/api/purchase-applies/{request_id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "request_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "購入申請取得API",
+        "operationId": "getPurchaseApply",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseApplyResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "PurchaseApply"
+        ]
+      },
+      "put": {
+        "summary": "購入申請更新API",
+        "operationId": "updatePurchaseApply",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseApplyUpsertRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "PurchaseApply"
+        ]
+      },
+      "delete": {
+        "summary": "購入申請削除API",
+        "operationId": "deletePurchaseApply",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "PurchaseApply"
+        ]
+      }
+    },
+    "/api/purchase-applies": {
+      "get": {
+        "summary": "購入申請リスト取得API",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseAppliesResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getPurchaseApplies",
+        "tags": [
+          "PurchaseApply"
+        ]
+      },
+      "post": {
+        "summary": "購入申請作成API",
+        "operationId": "createPurchaseApply",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseApplyUpsertRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "PurchaseApply"
+        ]
+      }
+    },
+    "/api/purchase-applies/{request_id}/status": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "request_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "購入申請ステータス変更API",
+        "operationId": "updatePurchaseApplyStatus",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseApplyStatusUpdateRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "PurchaseApply"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PurchaseApplyResponse": {
+        "type": "object",
+        "x-examples": {
+          "Example": {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "name": "string",
+            "description": "string",
+            "price": 100,
+            "quantity": 1,
+            "url": "string",
+            "status": 0,
+            "requestBy": {
+              "id": 1,
+              "firstName": "string",
+              "lastName": "string"
+            },
+            "requestAt": "string"
+          }
+        },
+        "title": "PurchaseApplyResponse",
+        "description": "",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "購入申請ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "品名"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明"
+          },
+          "price": {
+            "type": "integer",
+            "description": "税込み価格"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "数量"
+          },
+          "url": {
+            "type": "string",
+            "description": "参考URL"
+          },
+          "status": {
+            "type": "integer",
+            "description": "購入申請ステータス"
+          },
+          "requestedBy": {
+            "type": "object",
+            "description": "申請者",
+            "required": [
+              "id",
+              "firstName",
+              "lastName"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "申請者ID"
+              },
+              "firstName": {
+                "type": "string",
+                "description": "ファーストネーム"
+              },
+              "lastName": {
+                "type": "string",
+                "description": "ラストネーム"
+              }
+            }
+          },
+          "requestedAt": {
+            "type": "string",
+            "description": "申請日"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "price",
+          "quantity",
+          "url",
+          "status",
+          "requestedBy",
+          "requestedAt"
+        ]
+      },
+      "PurchaseAppliesResponse": {
+        "type": "object",
+        "x-examples": {
+          "Example": {
+            "requests": [
+              {
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "name": "string",
+                "description": "string",
+                "price": 100,
+                "quantity": 1,
+                "url": "string",
+                "status": 0,
+                "requestBy": {
+                  "id": 1,
+                  "firstName": "string",
+                  "lastName": "string"
+                },
+                "requestAt": "string"
+              }
+            ]
+          }
+        },
+        "title": "PurchaseAppliesResponse",
+        "properties": {
+          "requests": {
+            "description": "購入申請一覧",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PurchaseApplyResponse"
+            }
+          }
+        },
+        "required": [
+          "requests"
+        ]
+      },
+      "PurchaseApplyUpsertRequest": {
+        "type": "object",
+        "x-examples": {
+          "Example ": {
+            "name": "string",
+            "description": "string",
+            "price": 100,
+            "quantity": 1,
+            "url": "string"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "品名"
+          },
+          "description": {
+            "type": "string",
+            "description": "説明"
+          },
+          "price": {
+            "type": "integer",
+            "description": "税込み価格"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "数量"
+          },
+          "url": {
+            "type": "string",
+            "description": "参考URL"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "price",
+          "quantity",
+          "url"
+        ]
+      },
+      "PurchaseApplyStatusUpdateRequest": {
+        "title": "PurchaseApplyStatusUpdateRequest",
+        "x-stoplight": {
+          "id": "m9vcayn4rfcee"
+        },
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "購入申請ステータス"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    }
+  }
+}
