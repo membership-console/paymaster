@@ -13,14 +13,13 @@
     }
   ],
   "paths": {
-    "/api/purchase-applies/{request_id}": {
+    "/api/purchase-applies/{purchase_apply_i}": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "request_id",
-          "in": "path",
+          "name": "purchase_apply_id", "in": "path",
           "required": true
         }
       ],
@@ -120,13 +119,13 @@
         ]
       }
     },
-    "/api/purchase-applies/{request_id}/status": {
+    "/api/purchase-applies/{purchase_apply_id}/status": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "request_id",
+          "name": "purchase_apply_i",
           "in": "path",
           "required": true
         }
@@ -250,7 +249,7 @@
         "type": "object",
         "x-examples": {
           "Example": {
-            "requests": [
+            "purchaseApplies": [
               {
                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 "name": "string",
@@ -271,7 +270,7 @@
         },
         "title": "PurchaseAppliesResponse",
         "properties": {
-          "requests": {
+          "purchaseApplies": {
             "description": "購入申請一覧",
             "type": "array",
             "items": {
@@ -280,7 +279,7 @@
           }
         },
         "required": [
-          "requests"
+          "purchaseApplies"
         ]
       },
       "PurchaseApplyUpsertRequest": {
