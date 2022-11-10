@@ -11,8 +11,6 @@ services:
       POSTGRES_USER: "paymaster"
       POSTGRES_PASSWORD: "paymaster"
       POSTGRES_DATABASE: "paymaster"
-      TZ: "Asia/Tokyo"
-      PGTZ: "Asia/Tokyo"
     volumes:
       - ./docker/postgres/data:/var/lib/postgresql/data
   db-test:
@@ -25,5 +23,3 @@ services:
       POSTGRES_USER: "paymaster"
       POSTGRES_PASSWORD: "paymaster"
       POSTGRES_DATABASE: "paymaster"
-      TZ: "Asia/Tokyo"
-      PGTZ: "Asia/Tokyo"

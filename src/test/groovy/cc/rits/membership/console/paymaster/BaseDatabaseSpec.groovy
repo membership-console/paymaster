@@ -34,9 +34,7 @@ class BaseDatabaseSpec extends BaseSpec {
      * cleanup after test case
      */
     def cleanup() {
-        sql.cacheConnection {
-            it.rollback()
-        }
+        // TODO: TRUNCATEする
     }
 
 }

@@ -5,27 +5,27 @@
   },
   "info": {
     "title": "Paymaster",
-    "version": "1.0_SNAPSHOT"
+    "version": "1.0.0_SNAPSHOT"
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "http://localhost:8082"
     }
   ],
   "paths": {
-    "/api/purchase-applies/{purchase_apply_i}": {
+    "/api/purchase-requests/{purchase_request_id}": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "purchase_apply_id", "in": "path",
+          "name": "purchase_request_id", "in": "path",
           "required": true
         }
       ],
       "get": {
         "summary": "購入申請取得API",
-        "operationId": "getPurchaseApply",
+        "operationId": "getPurchaseRequest",
         "description": "",
         "responses": {
           "200": {
@@ -33,19 +33,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PurchaseApplyResponse"
+                  "$ref": "#/components/schemas/PurchaseRequestResponse"
                 }
               }
             }
           }
         },
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       },
       "put": {
         "summary": "購入申請更新API",
-        "operationId": "updatePurchaseApply",
+        "operationId": "updatePurchaseRequest",
         "responses": {
           "200": {
             "description": "OK"
@@ -55,29 +55,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurchaseApplyUpsertRequest"
+                "$ref": "#/components/schemas/PurchaseRequestUpsertRequest"
               }
             }
           }
         },
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       },
       "delete": {
         "summary": "購入申請削除API",
-        "operationId": "deletePurchaseApply",
+        "operationId": "deletePurchaseRequest",
         "responses": {
           "200": {
             "description": "OK"
           }
         },
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       }
     },
-    "/api/purchase-applies": {
+    "/api/purchase-requests": {
       "get": {
         "summary": "購入申請リスト取得API",
         "responses": {
@@ -86,7 +86,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PurchaseAppliesResponse"
+                  "$ref": "#/components/schemas/PurchaseRequestsResponse"
                 }
               }
             }
@@ -94,12 +94,12 @@
         },
         "operationId": "getPurchaseApplies",
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       },
       "post": {
         "summary": "購入申請作成API",
-        "operationId": "createPurchaseApply",
+        "operationId": "createPurchaseRequest",
         "responses": {
           "201": {
             "description": "Created"
@@ -109,30 +109,30 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurchaseApplyUpsertRequest"
+                "$ref": "#/components/schemas/PurchaseRequestUpsertRequest"
               }
             }
           }
         },
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       }
     },
-    "/api/purchase-applies/{purchase_apply_id}/status": {
+    "/api/purchase-requests/{purchase_request_id}/status": {
       "parameters": [
         {
           "schema": {
             "type": "string"
           },
-          "name": "purchase_apply_i",
+          "name": "purchase_request_id",
           "in": "path",
           "required": true
         }
       ],
       "put": {
         "summary": "購入申請ステータス変更API",
-        "operationId": "updatePurchaseApplyStatus",
+        "operationId": "updatePurchaseRequestStatus",
         "responses": {
           "200": {
             "description": "OK"
@@ -142,20 +142,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurchaseApplyStatusUpdateRequest"
+                "$ref": "#/components/schemas/PurchaseRequestStatusUpdateRequest"
               }
             }
           }
         },
         "tags": [
-          "PurchaseApply"
+          "PurchaseRequest"
         ]
       }
     }
   },
   "components": {
     "schemas": {
-      "PurchaseApplyResponse": {
+      "PurchaseRequestResponse": {
         "type": "object",
         "x-examples": {
           "Example": {
@@ -174,7 +174,7 @@
             "requestAt": "string"
           }
         },
-        "title": "PurchaseApplyResponse",
+        "title": "PurchaseRequestResponse",
         "description": "",
         "properties": {
           "id": {
@@ -245,11 +245,11 @@
           "requestedAt"
         ]
       },
-      "PurchaseAppliesResponse": {
+      "PurchaseRequestsResponse": {
         "type": "object",
         "x-examples": {
           "Example": {
-            "purchaseApplies": [
+            "purchaseRequests": [
               {
                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 "name": "string",
@@ -268,13 +268,13 @@
             ]
           }
         },
-        "title": "PurchaseAppliesResponse",
+        "title": "PurchaseRequestsResponse",
         "properties": {
           "purchaseApplies": {
             "description": "購入申請一覧",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PurchaseApplyResponse"
+              "$ref": "#/components/schemas/PurchaseRequestResponse"
             }
           }
         },
@@ -282,7 +282,7 @@
           "purchaseApplies"
         ]
       },
-      "PurchaseApplyUpsertRequest": {
+      "PurchaseRequestUpsertRequest": {
         "type": "object",
         "x-examples": {
           "Example ": {
@@ -323,8 +323,8 @@
           "url"
         ]
       },
-      "PurchaseApplyStatusUpdateRequest": {
-        "title": "PurchaseApplyStatusUpdateRequest",
+      "PurchaseRequestStatusUpdateRequest": {
+        "title": "PurchaseRequestStatusUpdateRequest",
         "x-stoplight": {
           "id": "m9vcayn4rfcee"
         },

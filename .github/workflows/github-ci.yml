@@ -37,20 +37,6 @@ jobs:
           ./gradlew build -x test
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: paymaster
-          POSTGRES_PASSWORD: paymaster
-          POSTGRES_DB: paymaster
-        ports:
-          - 55432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -59,8 +45,10 @@ jobs:
           java-version: '17'
       - name: run test
         run: |
+          docker-compose up -d db-test
           chmod +x ./gradlew
           ./gradlew test
+          docker-compose down
       - name: upload test report
         uses: actions/upload-artifact@v3
         if: failure()

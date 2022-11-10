@@ -9,23 +9,17 @@ import io.micronaut.security.rules.SecurityRule
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 
-/**
- * ヘルスチェックコントローラー
- */
 @Tag(name = "health")
-@Controller("/api/health")
-@Secured(SecurityRule.IS_ANONYMOUS)
-class HealthCheckRestController {
+@Controller("/api/health/auth")
+@Secured(SecurityRule.IS_AUTHENTICATED)
+class AuthHealthCheckRestController {
 
-    private val logger = LoggerFactory.getLogger(HealthCheckRestController::class.java)
+    private val logger = LoggerFactory.getLogger(AuthHealthCheckRestController::class.java)
 
-    /**
-     * ヘルスチェックAPI
-     */
     @Get
     @Status(HttpStatus.OK)
     fun check() {
-        logger.info("Server status: OK")
+        logger.info("The connection for authentication server status: OK")
     }
 
 }
