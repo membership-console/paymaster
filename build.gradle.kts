@@ -35,6 +35,8 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut.security:micronaut-security-oauth2")
+    implementation("io.micronaut.security:micronaut-security-jwt")
 
     // annotation
     implementation("jakarta.annotation:jakarta.annotation-api")
@@ -54,6 +56,7 @@ dependencies {
 
     // test
     testImplementation("org.codehaus.groovy:groovy-sql")
+    testImplementation("io.projectreactor:reactor-test:3.5.0")
 }
 
 

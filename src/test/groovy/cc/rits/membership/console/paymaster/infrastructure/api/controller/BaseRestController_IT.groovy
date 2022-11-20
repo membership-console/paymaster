@@ -78,11 +78,15 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      * @param status expected HTTP status
      */
     def execute(final HttpRequest request, final HttpStatus status) {
-        final response = this.client.toBlocking() //
-            .exchange(request)
-
-        assert response.status() == status
-        return response
+        try {
+            final response = this.client.toBlocking() //
+                .exchange(request)
+            assert response.status() == status
+            return response
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assert httpClientResponseException.status == status
+            return httpClientResponseException.response
+        }
     }
 
 
@@ -113,13 +117,14 @@ class BaseRestController_IT extends BaseDatabaseSpec {
     def execute(final HttpRequest request, final BaseException exception) {
         try {
             this.client.toBlocking().exchange(request)
-        } catch (HttpClientResponseException clientResponseException) {
-            assert clientResponseException.status == exception.status
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assert httpClientResponseException.status == exception.status
 
-            final response = clientResponseException.response as ErrorResponse
+            final response = httpClientResponseException.response as ErrorResponse
             assert response.code == exception.errorCode.code
             assert response.message == exception.errorCode.message
             return response
         }
     }
+
 }

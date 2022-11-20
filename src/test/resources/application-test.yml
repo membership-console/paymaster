@@ -6,3 +6,12 @@ datasources:
     username: "paymaster"
     password: "paymaster"
     schema-generate: none
+micronaut:
+  security:
+    oauth2:
+      clients:
+        iam:
+          client-id: "test"
+          client-secret: "test"
+          token:
+            url: "test"

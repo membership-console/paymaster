@@ -6,6 +6,12 @@ import io.micronaut.http.HttpStatus
  * エラーコード
  */
 enum class ErrorCode(val code: Int, val message: String) {
+    /**
+     * 401
+     */
+    USER_NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED.code, "ログインが必要です。"),
+
+    USER_CREDENTIALS_ARE_WRONG(HttpStatus.UNAUTHORIZED.code, "認証情報が間違っています。"),
 
     /**
      * 500
