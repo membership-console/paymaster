@@ -93,6 +93,7 @@ flyway {
     url = "jdbc:postgresql://localhost:5432/paymaster"
     user = "paymaster"
     password = "paymaster"
+    cleanDisabled = false
 }
 
 
