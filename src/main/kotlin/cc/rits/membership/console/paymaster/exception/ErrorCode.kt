@@ -1,23 +1,31 @@
 package cc.rits.membership.console.paymaster.exception
 
-import io.micronaut.http.HttpStatus
-
 /**
  * エラーコード
  */
 enum class ErrorCode(val code: Int, val message: String) {
     /**
-     * 401
+     * 30000~30999: 400 Bad Request
      */
-    USER_NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED.code, "ログインが必要です。"),
-
-    USER_CREDENTIALS_ARE_WRONG(HttpStatus.UNAUTHORIZED.code, "認証情報が間違っています。"),
 
     /**
-     * 500
+     * 31000~31999: 401 Unauthorized
      */
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.code, "不明なエラーが発生しました。問題が解決しない場合は管理者にお問い合わせください。"),
+    USER_NOT_LOGGED_IN(31000, "ユーザはログインしていません。問題が解決しない場合は、管理者までご連絡ください。"),
 
-    UNEXPECTED_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.code, "予期せぬエラーが発生しました。今一度操作を見直してください。")
+    /**
+     * 32000~32999: 403 Forbidden
+     */
+    USER_HAS_NO_PERMISSION(32000, "その動作は許可されていません。"),
+
+    /**
+     * 33000~33999: 404 Not Found
+     */
+    NOT_FOUND_API(33000, "APIが見つかりません。"),
+
+    /**
+     * 35000~35999: 500 Internal Server Error
+     */
+    UNEXPECTED_ERROR(35000, "予期しないエラーが発生しました。問題が解決しない場合は、管理者までご連絡ください。")
 
 }
