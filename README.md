@@ -1,54 +1,46 @@
-## Micronaut 3.7.2 Documentation
+# Paymaster
 
-- [User Guide](https://docs.micronaut.io/3.7.2/guide/index.html)
-- [API Reference](https://docs.micronaut.io/3.7.2/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/3.7.2/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
+[![CI](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml/badge.svg)](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml)
 
----
+## 概要
 
-- [Shadow Gradle Plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
+本プロジェクトはMembership Consoleの会計システムです。
 
-## Feature security documentation
+## 開発
 
-- [Micronaut Security documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
+### 開発環境
 
-## Feature test-resources documentation
+- Java OpenJDK 17
+- Kotlin 1.6.10
+- Micronaut 3.7.2
+- PostgreSQL 13
+- docker-compose
 
-- [Micronaut Test Resources documentation](https://micronaut-projects.github.io/micronaut-test-resources/latest/guide/)
+### ビルド方法
 
-## Feature flyway documentation
+ビルドに成功すると、`app/build/libs`直下に`.jar`ファイルが生成されます。
 
-- [Micronaut Flyway Database Migration documentation](https://micronaut-projects.github.io/micronaut-flyway/latest/guide/index.html)
+```sh
+$ ./gradlew build -x test
+```
 
-- [https://flywaydb.org/](https://flywaydb.org/)
+### 起動方法
 
-## Feature openapi documentation
+まず、Docker から PostgreSQL を起動します。
 
-- [Micronaut OpenAPI Support documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
+```
+$ docker compose up -d
+# 5432 db: ローカル用データベース
+# 55432 db-test: テスト用データベース
+```
 
-- [https://www.openapis.org](https://www.openapis.org)
+デフォルトで使用されるポート番号は`8082`です。${PORT}を設定することで変更できます。
 
-## Feature reactor documentation
-
-- [Micronaut Reactor documentation](https://micronaut-projects.github.io/micronaut-reactor/snapshot/guide/index.html)
-
-## Feature data-jdbc documentation
-
-- [Micronaut Data JDBC documentation](https://micronaut-projects.github.io/micronaut-data/latest/guide/index.html#jdbc)
-
-## Feature http-client documentation
-
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
-
-## Feature swagger-ui documentation
-
-- [Micronaut Swagger UI documentation](https://micronaut-projects.github.io/micronaut-openapi/latest/guide/index.html)
-
-- [https://swagger.io/tools/swagger-ui/](https://swagger.io/tools/swagger-ui/)
-
-## Feature jdbc-hikari documentation
-
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
-
-
+```shell
+# 1. run .jar file
+$ java -jar paymaster-<version>-all.jar
+```
+もしくは
+```shell
+$ ./gradlew run
+```
