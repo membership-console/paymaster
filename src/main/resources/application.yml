@@ -35,7 +35,7 @@ micronaut:
     netty:
       access-logger:
         enabled: true
-    port: ${PORT:8082}
+    port: ${PORT:8080}
 datasources:
   default:
     driverClassName: org.postgresql.Driver
