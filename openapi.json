@@ -5,7 +5,7 @@
   },
   "info": {
     "title": "Paymaster",
-    "version": "1.0.0_SNAPSHOT"
+    "version": "1.0.0-SNAPSHOT"
   },
   "servers": [
     {
@@ -19,7 +19,8 @@
           "schema": {
             "type": "string"
           },
-          "name": "purchase_request_id", "in": "path",
+          "name": "purchase_request_id",
+          "in": "path",
           "required": true
         }
       ],

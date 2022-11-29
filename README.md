@@ -1,6 +1,8 @@
 # Paymaster
 
-[![CI](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml/badge.svg)](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml)
+![CI](https://github.com/membership-console/paymaster/workflows/CI/badge.svg)
+![Build](https://github.com/membership-console/paymaster/workflows/Build/badge.svg)
+![version](https://img.shields.io/badge/version-1.0.0--SNAPSHOT-blue.svg)
 
 ## 概要
 
@@ -40,7 +42,9 @@ $ docker compose up -d
 # 1. run .jar file
 $ java -jar paymaster-<version>-all.jar
 ```
+
 もしくは
+
 ```shell
 $ ./gradlew run
 ```
