@@ -13,7 +13,7 @@ class BaseDatabaseSpec extends BaseSpec {
     /**
      * SQL Handler
      */
-    protected static Sql sql
+    Sql sql
 
     @Inject
     private init() {

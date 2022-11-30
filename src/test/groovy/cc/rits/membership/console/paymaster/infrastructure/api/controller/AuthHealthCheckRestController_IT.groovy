@@ -1,28 +1,24 @@
 package cc.rits.membership.console.paymaster.infrastructure.api.controller
 
-import cc.rits.membership.console.paymaster.auth.MockAuthenticationFetcher
-import cc.rits.membership.console.paymaster.enums.UserRole
+import cc.rits.membership.console.paymaster.client.response.UserGroupResponse
+import cc.rits.membership.console.paymaster.client.response.UserInfoResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.security.authentication.Authentication
-import jakarta.inject.Inject
 
 class AuthHealthCheckRestController_IT extends BaseRestController_IT {
     // API PATH
     static final BASE_PATH = "/api/health/auth"
     static final AUTH_HEALTH_CHECK_PATH = BASE_PATH
 
-    @Inject
-    MockAuthenticationFetcher authenticationFetcher
-
-
     def "ヘルスチェックAPI(認証): 正常系 200 OKを返す"() {
         given:
-        authenticationFetcher.authentication = Authentication.build(
-            "1", [UserRole.PURCHASE_REQUEST_ADMIN.toString()]
-        )
+        final userInfoResponse = new UserInfoResponse(
+            1, "test", "test", 2022, [
+            new UserGroupResponse(1, "test", [2, 3])
+        ])
 
         expect:
-        final request = this.getRequest(AUTH_HEALTH_CHECK_PATH)
+        final request = this.getRequest(AUTH_HEALTH_CHECK_PATH) //
+            .header("Authorization", this.createAuthenticationInfo(userInfoResponse))
         this.execute(request, HttpStatus.OK)
     }
 
