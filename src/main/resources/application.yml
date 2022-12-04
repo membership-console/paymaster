@@ -25,25 +25,25 @@ micronaut:
     oauth2:
       clients:
         iam:
-          client-id: "${CLIENT_ID}"
-          client-secret: "${CLIENT_SECRET}"
+          client-id: "${IAM_CLIENT_ID}"
+          client-secret: "${IAM_CLIENT_SECRET}"
           grant-type: client_credentials
           token:
-            url: "${TOKEN_URL}"
+            url: "${IAM_TOKEN_URL}"
             auth-method: client_secret_basic
   server:
     netty:
       access-logger:
         enabled: true
-    port: ${PORT:8082}
+    port: ${PORT:8080}
 datasources:
   default:
     driverClassName: org.postgresql.Driver
     db-type: postgresql
     dialect: postgres
-    url: "jdbc:postgresql://localhost:5432/paymaster"
-    username: "paymaster"
-    password: "paymaster"
+    url: "${POSTGRES_URL:jdbc:postgresql://localhost:5432/paymaster}"
+    username: "${POSTGRES_USERNAME:paymaster}"
+    password: "${POSTGRES_PASSWORD:paymaster}"
     maximum-pool-size: 5
     schema-generate: none
 netty:

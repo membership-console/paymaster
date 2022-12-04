@@ -5,11 +5,11 @@
   },
   "info": {
     "title": "Paymaster",
-    "version": "1.0.0_SNAPSHOT"
+    "version": "1.0.0-SNAPSHOT"
   },
   "servers": [
     {
-      "url": "http://localhost:8082"
+      "url": "http://localhost:8080"
     }
   ],
   "paths": {
@@ -19,7 +19,8 @@
           "schema": {
             "type": "string"
           },
-          "name": "purchase_request_id", "in": "path",
+          "name": "purchase_request_id",
+          "in": "path",
           "required": true
         }
       ],

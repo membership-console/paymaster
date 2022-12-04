@@ -1,6 +1,8 @@
 # Paymaster
 
-[![CI](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml/badge.svg)](https://github.com/membership-console/paymaster/actions/workflows/github-ci.yml)
+![CI](https://github.com/membership-console/paymaster/workflows/CI/badge.svg)
+![Build](https://github.com/membership-console/paymaster/workflows/Build/badge.svg)
+![version](https://img.shields.io/badge/version-1.0.0--SNAPSHOT-blue.svg)
 
 ## 概要
 
@@ -34,13 +36,15 @@ $ docker compose up -d
 # 55432 db-test: テスト用データベース
 ```
 
-デフォルトで使用されるポート番号は`8082`です。${PORT}を設定することで変更できます。
+デフォルトで使用されるポート番号は`8080`です。${PORT}を設定することで変更できます。
 
 ```shell
 # 1. run .jar file
 $ java -jar paymaster-<version>-all.jar
 ```
+
 もしくは
+
 ```shell
 $ ./gradlew run
 ```
