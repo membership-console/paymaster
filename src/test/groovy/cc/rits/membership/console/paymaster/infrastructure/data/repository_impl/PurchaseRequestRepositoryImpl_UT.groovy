@@ -55,7 +55,7 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
         given:
         final expectedId = UUID.randomUUID()
         final userInfoResponse = new UserInfoResponse(1, "", "", 2022, [
-            new UserGroupResponse(1, "", [2, 3])
+            new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
         ])
         final userModel = userFactory.createModel(userInfoResponse)
 
@@ -88,7 +88,7 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
         Objects.nonNull(result.requestedAt)
     }
 
-    def "findById:ぞんざいしない場合はnull"() {
+    def "findById: 存在しない場合はnull"() {
         when:
         final result = this.sut.findById(UUID.randomUUID())
 
@@ -105,10 +105,10 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
         ]
         final userInfoResponseList = [
             new UserInfoResponse(1, "", "", 2022, [
-                new UserGroupResponse(1, "", [2])
+                new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
             ]),
             new UserInfoResponse(2, "", "", 2022, [
-                new UserGroupResponse(2, "", [3])
+                new UserGroupResponse(2, "", [UserRole.PAYMASTER_ADMIN.id])
             ])
         ]
 
@@ -135,10 +135,10 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
         result*.requestedBy.size() == 3
         result*.requestedBy*.id == [1, 2, null]
         result*.requestedBy*.entranceYear == [2022, 2022, null]
-        result*.requestedBy*.roles == [[UserRole.VIEWER], [UserRole.ADMIN], null]
+        result*.requestedBy*.roles == [[UserRole.PAYMASTER_ADMIN], [UserRole.PAYMASTER_ADMIN], null]
     }
 
-    def "findAll: 購入申請が一つも存在しな場合はempty"() {
+    def "findAll: 購入申請が一つも存在しない場合はempty"() {
         when:
         final result = this.sut.findAll()
 

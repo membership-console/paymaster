@@ -113,11 +113,10 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      */
     def execute(final HttpRequest request, final BaseException exception) {
         try {
-            this.client.toBlocking().exchange(request)
+            this.client.toBlocking().retrieve(request)
         } catch (HttpClientResponseException httpClientResponseException) {
             assert httpClientResponseException.status == exception.status
-
-            final response = httpClientResponseException.response as ErrorResponse
+            final response = this.objectMapper.readValue(httpClientResponseException.response.body().toString(), ErrorResponse.class)
             assert response.code == exception.errorCode.code
             assert response.message == exception.errorCode.message
             return response

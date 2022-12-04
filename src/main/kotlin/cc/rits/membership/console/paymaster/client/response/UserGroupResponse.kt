@@ -10,7 +10,8 @@ import io.micronaut.core.annotation.Introspected
 data class UserGroupResponse(
     /**
      *ユーザグループID
-     */@JsonProperty("id")
+     */
+    @JsonProperty("id")
     val id: Int,
 
     /**

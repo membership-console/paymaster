@@ -18,9 +18,8 @@ class UserRole_UT extends BaseSpec {
 
         where:
         id | expectedRole
-        2  | UserRole.VIEWER
-        3  | UserRole.ADMIN
-        4  | null
+        1  | UserRole.PAYMASTER_ADMIN
+        2  | null
     }
 
 }

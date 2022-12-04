@@ -6,6 +6,7 @@ import cc.rits.membership.console.paymaster.client.response.UserGroupResponse
 import cc.rits.membership.console.paymaster.client.response.UserInfoResponse
 import cc.rits.membership.console.paymaster.client.response.UserInfosResponse
 import cc.rits.membership.console.paymaster.enums.PurchaseRequestStatus
+import cc.rits.membership.console.paymaster.enums.UserRole
 import cc.rits.membership.console.paymaster.exception.ErrorCode
 import cc.rits.membership.console.paymaster.exception.UnauthorizedException
 import cc.rits.membership.console.paymaster.helper.TableHelper
@@ -50,20 +51,20 @@ class PurchaseRequestRestController_IT extends BaseRestController_IT {
         this.userInfosResponse = new UserInfosResponse(
             [
                 new UserInfoResponse(1, "", "", 2022, [
-                    new UserGroupResponse(1, "", [2, 3])
+                    new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
                 ]),
                 new UserInfoResponse(2, "", "", 2022, [
-                    new UserGroupResponse(1, "", [2, 3])
+                    new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
                 ])
             ]
         )
     }
 
-    def "getPurchaseRequests: 正常系 購入申請リストを取得できる"() {
+    def "購入申請リスト取得API: 正常系 購入申請リストを取得できる"() {
         given:
         final userInfoResponse = new UserInfoResponse(
             1, "test", "test", 2022, [
-            new UserGroupResponse(1, "test", [2, 3])
+            new UserGroupResponse(1, "test", [UserRole.PAYMASTER_ADMIN.id])
         ])
 
         final request = this.getRequest(GET_PURCHASE_REQUESTS_API_PATH) //
@@ -99,12 +100,12 @@ class PurchaseRequestRestController_IT extends BaseRestController_IT {
         result*.quantity == [1, 2, 3]
         result*.url == ["", "", ""]
         result*.status == [PurchaseRequestStatus.PENDING_APPROVAL.id, PurchaseRequestStatus.APPROVED.id, PurchaseRequestStatus.PURCHASED.id]
-        result*.requestedBy.id == [1, 2, null]
-        result*.requestedBy.firstName == ["", "", null]
-        result*.requestedBy.lastName == ["", "", null]
+        result*.requestedBy.id == [1, 2]
+        result*.requestedBy.firstName == ["", ""]
+        result*.requestedBy.lastName == ["", ""]
     }
 
-    def "getPurchaseRequests: 異常系 ログインしていない場合は401エラー"() {
+    def "購入申請リスト取得API: 異常系 ログインしていない場合は401エラー"() {
         expect:
         final request = this.getRequest(GET_PURCHASE_REQUESTS_API_PATH)
         this.execute(request, new UnauthorizedException(ErrorCode.USER_NOT_LOGGED_IN))
