@@ -1,26 +1,27 @@
 package cc.rits.membership.console.paymaster.infrastructure.api.controller
 
 import cc.rits.membership.console.paymaster.BaseDatabaseSpec
+import cc.rits.membership.console.paymaster.client.response.UserInfoResponse
 import cc.rits.membership.console.paymaster.exception.BaseException
 import cc.rits.membership.console.paymaster.infrastructure.api.request.BaseRequest
 import cc.rits.membership.console.paymaster.infrastructure.api.response.ErrorResponse
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.client.exceptions.HttpClientResponseException
-import io.micronaut.http.cookie.Cookie
 import jakarta.inject.Inject
-import spock.lang.Shared
 
 class BaseRestController_IT extends BaseDatabaseSpec {
-
-    @Shared
-    private final Cookie cookie = Cookie.of("SessionId", "dummy")
 
     @Inject
     @Client("/")
     HttpClient client
+
+    @Inject
+    ObjectMapper objectMapper
 
     /**
      * GET request
@@ -30,8 +31,7 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      * @return HTTP request
      */
     HttpRequest getRequest(final String path) {
-        return HttpRequest.GET(path) //
-            .cookie(cookie)
+        return HttpRequest.GET(path)
     }
 
     /**
@@ -43,8 +43,7 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      * @return HTTP request
      */
     HttpRequest postRequest(final String path, final BaseRequest body) {
-        return HttpRequest.POST(path, body) //
-            .cookie(cookie)
+        return HttpRequest.POST(path, body)
     }
 
     /**
@@ -56,8 +55,7 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      * @return HTTP request
      */
     HttpRequest putRequest(final String path, final BaseRequest body) {
-        return HttpRequest.PUT(path, body) //
-            .cookie(cookie)
+        return HttpRequest.PUT(path, body)
     }
 
     /**
@@ -67,8 +65,7 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      * @return HTTP request
      */
     HttpRequest deleteRequest(final path) {
-        return HttpRequest.DELETE(path) //
-            .cookie(cookie)
+        return HttpRequest.DELETE(path)
     }
 
     /**
@@ -101,7 +98,7 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      */
     def <T> T execute(final HttpRequest request, final HttpStatus status, final Class<T> clazz) {
         final response = this.client.toBlocking() //
-            .exchange(request, clazz)
+            .exchange(request, Argument.of(clazz))
 
         assert response.status() == status
 
@@ -116,15 +113,18 @@ class BaseRestController_IT extends BaseDatabaseSpec {
      */
     def execute(final HttpRequest request, final BaseException exception) {
         try {
-            this.client.toBlocking().exchange(request)
+            this.client.toBlocking().retrieve(request)
         } catch (HttpClientResponseException httpClientResponseException) {
             assert httpClientResponseException.status == exception.status
-
-            final response = httpClientResponseException.response as ErrorResponse
+            final response = this.objectMapper.readValue(httpClientResponseException.response.body().toString(), ErrorResponse.class)
             assert response.code == exception.errorCode.code
             assert response.message == exception.errorCode.message
             return response
         }
+    }
+
+    def createAuthenticationInfo(final UserInfoResponse userInfoResponse) {
+        return "User " + objectMapper.writeValueAsString(userInfoResponse)
     }
 
 }

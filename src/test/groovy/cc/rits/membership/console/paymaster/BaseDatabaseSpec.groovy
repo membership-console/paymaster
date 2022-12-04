@@ -1,6 +1,7 @@
 package cc.rits.membership.console.paymaster
 
 import groovy.sql.Sql
+import io.micronaut.transaction.jdbc.DelegatingDataSource
 import jakarta.inject.Inject
 
 import javax.sql.DataSource
@@ -13,12 +14,12 @@ class BaseDatabaseSpec extends BaseSpec {
     /**
      * SQL Handler
      */
-    protected static Sql sql
+    Sql sql
 
     @Inject
     private init() {
         if (Objects.isNull(sql)) {
-            sql = Sql.newInstance(dataSource)
+            sql = Sql.newInstance((dataSource as DelegatingDataSource).targetDataSource)
         }
     }
 
@@ -34,7 +35,7 @@ class BaseDatabaseSpec extends BaseSpec {
      * cleanup after test case
      */
     def cleanup() {
-        // TODO: TRUNCATEする
+        sql.execute("DELETE FROM purchase_request")
     }
 
 }

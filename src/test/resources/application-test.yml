@@ -6,6 +6,10 @@ datasources:
     username: "paymaster"
     password: "paymaster"
     schema-generate: none
+flyway:
+  datasources:
+    default:
+      enabled: true
 micronaut:
   security:
     oauth2:

@@ -57,6 +57,8 @@ dependencies {
     // test
     testImplementation("org.codehaus.groovy:groovy-sql")
     testImplementation("io.projectreactor:reactor-test:3.5.0")
+    testImplementation("org.jeasy:easy-random-core:5.0.0")
+    testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
 

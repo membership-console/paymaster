@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
  * 認証・認可のユーティリティ
  */
 @Singleton
-class AuthUtil(
+open class AuthUtil(
     private val clientCredentialsClient: ClientCredentialsClient
 ) {
 

@@ -18,7 +18,7 @@ class TableHelper {
      */
     def static insert(final Sql sql, final String tableName, final Closure rows) {
         TableParser.asTable(rows).toMapList().each {
-            sql.dataSet("`$tableName`").add(it)
+            sql.dataSet("$tableName").add(it)
         }
     }
 
