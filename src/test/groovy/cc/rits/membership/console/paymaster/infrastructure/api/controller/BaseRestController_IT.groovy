@@ -124,7 +124,8 @@ class BaseRestController_IT extends BaseDatabaseSpec {
     }
 
     def createAuthenticationInfo(final UserInfoResponse userInfoResponse) {
-        return "User " + objectMapper.writeValueAsString(userInfoResponse)
+        final data = objectMapper.writeValueAsString(userInfoResponse).bytes
+        return Base64.getEncoder().encodeToString(data)
     }
 
 }
