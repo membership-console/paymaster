@@ -23,6 +23,8 @@ enum class ErrorCode(val code: Int, val message: String) {
      */
     NOT_FOUND_API(33000, "APIが見つかりません。"),
 
+    NOT_FOUND_PURCHASE_REQUEST(33001, "購入申請が見つかりません。"),
+
     /**
      * 35000~35999: 500 Internal Server Error
      */

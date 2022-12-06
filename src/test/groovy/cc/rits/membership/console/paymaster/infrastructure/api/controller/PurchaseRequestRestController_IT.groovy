@@ -8,8 +8,10 @@ import cc.rits.membership.console.paymaster.client.response.UserInfosResponse
 import cc.rits.membership.console.paymaster.enums.PurchaseRequestStatus
 import cc.rits.membership.console.paymaster.enums.UserRole
 import cc.rits.membership.console.paymaster.exception.ErrorCode
+import cc.rits.membership.console.paymaster.exception.NotFoundException
 import cc.rits.membership.console.paymaster.exception.UnauthorizedException
 import cc.rits.membership.console.paymaster.helper.TableHelper
+import cc.rits.membership.console.paymaster.infrastructure.api.response.PurchaseRequestResponse
 import cc.rits.membership.console.paymaster.infrastructure.api.response.PurchaseRequestsResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.security.oauth2.client.clientcredentials.ClientCredentialsClient
@@ -19,10 +21,14 @@ import jakarta.inject.Inject
 import reactor.core.publisher.Mono
 import spock.lang.Shared
 
+/**
+ * 購入申請APIの統合テスト
+ */
 class PurchaseRequestRestController_IT extends BaseRestController_IT {
     // API PATH
     static final BASE_PATH = "/api/purchase-requests"
     static final GET_PURCHASE_REQUESTS_API_PATH = BASE_PATH
+    static final GET_PURCHASE_REQUEST_API_PATH = BASE_PATH + "/%s"
 
     @Inject
     IAMClient iamClient
@@ -50,10 +56,10 @@ class PurchaseRequestRestController_IT extends BaseRestController_IT {
         this.tokenResponse = new TokenResponse("", "")
         this.userInfosResponse = new UserInfosResponse(
             [
-                new UserInfoResponse(1, "", "", 2022, [
+                new UserInfoResponse(1, "", "", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
                     new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
                 ]),
-                new UserInfoResponse(2, "", "", 2022, [
+                new UserInfoResponse(2, "", "", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
                     new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
                 ])
             ]
@@ -63,12 +69,12 @@ class PurchaseRequestRestController_IT extends BaseRestController_IT {
     def "購入申請リスト取得API: 正常系 購入申請リストを取得できる"() {
         given:
         final userInfoResponse = new UserInfoResponse(
-            1, "test", "test", 2022, [
+            1, "test", "test", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
             new UserGroupResponse(1, "test", [UserRole.PAYMASTER_ADMIN.id])
         ])
 
         final request = this.getRequest(GET_PURCHASE_REQUESTS_API_PATH) //
-            .header("Authorization", this.createAuthenticationInfo(userInfoResponse))
+            .header("X-Membership-Console-User", this.createAuthenticationInfo(userInfoResponse))
 
         final expectedIds = [
             UUID.randomUUID(),
@@ -108,6 +114,65 @@ class PurchaseRequestRestController_IT extends BaseRestController_IT {
     def "購入申請リスト取得API: 異常系 ログインしていない場合は401エラー"() {
         expect:
         final request = this.getRequest(GET_PURCHASE_REQUESTS_API_PATH)
+        this.execute(request, new UnauthorizedException(ErrorCode.USER_NOT_LOGGED_IN))
+    }
+
+    def "購入申請取得API: 正常系 購入申請を取得できる"() {
+        given:
+        final userInfoResponse = new UserInfoResponse(
+            1, "test", "test", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
+            new UserGroupResponse(1, "test", [UserRole.PAYMASTER_ADMIN.id])
+        ])
+
+        final purchaseRequestId = UUID.randomUUID()
+
+        final request = this.getRequest(String.format(GET_PURCHASE_REQUEST_API_PATH, purchaseRequestId)) //
+            .header("X-Membership-Console-User", this.createAuthenticationInfo(userInfoResponse))
+
+        // @formatter:off
+        TableHelper.insert sql, "purchase_request", {
+            id                | name | description | price | quantity | url | status                                    | requested_by
+            purchaseRequestId | "A"  | ""          | 100   | 1        | ""  | PurchaseRequestStatus.PENDING_APPROVAL.id | 1
+        }
+        // @formatter:on
+
+        when:
+        final result = this.execute(request, HttpStatus.OK, PurchaseRequestResponse.class)
+
+        then:
+        1 * this.iamClient.getUserInfo(1, "") >> userInfoResponse
+        1 * this.clientCredentialsClient.requestToken() >> Mono.just(tokenResponse)
+
+        result.id == purchaseRequestId
+        result.name == "A"
+        result.description == ""
+        result.price == 100
+        result.url == ""
+        result.status == PurchaseRequestStatus.PENDING_APPROVAL.id
+        result.requestedBy.id == userInfoResponse.id
+        result.requestedBy.firstName == userInfoResponse.firstName
+        result.requestedBy.lastName == userInfoResponse.lastName
+    }
+
+    def "購入申請取得API: 異常系 購入申請が存在しない場合は404エラー"() {
+        given:
+        final userInfoResponse = new UserInfoResponse(
+            1, "test", "test", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
+            new UserGroupResponse(1, "test", [UserRole.PAYMASTER_ADMIN.id])
+        ])
+
+        final purchaseRequestId = UUID.randomUUID()
+
+        final request = this.getRequest(String.format(GET_PURCHASE_REQUEST_API_PATH, purchaseRequestId)) //
+            .header("X-Membership-Console-User", this.createAuthenticationInfo(userInfoResponse))
+
+        expect:
+        this.execute(request, new NotFoundException(ErrorCode.NOT_FOUND_PURCHASE_REQUEST))
+    }
+
+    def "購入申請取得API: 異常系 ログインしていない場合は401エラー"() {
+        expect:
+        final request = this.getRequest(String.format(GET_PURCHASE_REQUEST_API_PATH, UUID.randomUUID()))
         this.execute(request, new UnauthorizedException(ErrorCode.USER_NOT_LOGGED_IN))
     }
 }

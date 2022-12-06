@@ -54,9 +54,11 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
     def "findById: idから購入申請を取得できる"() {
         given:
         final expectedId = UUID.randomUUID()
-        final userInfoResponse = new UserInfoResponse(1, "", "", 2022, [
-            new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
-        ])
+        final userInfoResponse = new UserInfoResponse(1, "", "", 2022, [UserRole.PAYMASTER_ADMIN.toString()],
+            [
+                new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
+            ]
+        )
         final userModel = userFactory.createModel(userInfoResponse)
 
         // @formatter:off
@@ -104,10 +106,10 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
             UUID.randomUUID()
         ]
         final userInfoResponseList = [
-            new UserInfoResponse(1, "", "", 2022, [
+            new UserInfoResponse(1, "", "", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
                 new UserGroupResponse(1, "", [UserRole.PAYMASTER_ADMIN.id])
             ]),
-            new UserInfoResponse(2, "", "", 2022, [
+            new UserInfoResponse(2, "", "", 2022, [UserRole.PAYMASTER_ADMIN.toString()], [
                 new UserGroupResponse(2, "", [UserRole.PAYMASTER_ADMIN.id])
             ])
         ]
