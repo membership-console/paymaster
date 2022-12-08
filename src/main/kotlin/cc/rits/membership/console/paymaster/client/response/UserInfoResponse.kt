@@ -33,6 +33,12 @@ data class UserInfoResponse(
     val entranceYear: Int,
 
     /**
+     * ロール一覧
+     */
+    @JsonProperty("roles")
+    val roles: List<String>,
+
+    /**
      * ユーザグループリスト
      */
     @JsonProperty("userGroups")

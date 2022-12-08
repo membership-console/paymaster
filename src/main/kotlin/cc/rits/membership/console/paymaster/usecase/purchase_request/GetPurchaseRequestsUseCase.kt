@@ -6,7 +6,7 @@ import jakarta.inject.Singleton
 import javax.transaction.Transactional
 
 /**
- * 購入申請取得ユースケース
+ * 購入申請リスト取得ユースケース
  */
 @Singleton
 @Transactional
