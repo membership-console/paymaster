@@ -11,7 +11,7 @@ import io.micronaut.security.filters.AuthenticationFetcher
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
-import java.util.Base64
+import java.util.*
 
 /**
  * AuthenticationFetcher
@@ -35,7 +35,8 @@ class ApplicationAuthenticationFetcher : AuthenticationFetcher {
                         val authorizationInfo = Base64.getDecoder().decode(authorization)
                         val userInfoResponse = ObjectMapper().readValue(authorizationInfo, UserInfoResponse::class.java)
                         val roles = userInfoResponse.roles
-                        emitter.success(Authentication.build(userInfoResponse.id.toString(), roles))
+                        val attributes = mapOf("userInfo" to userInfoResponse)
+                        emitter.success(Authentication.build(userInfoResponse.id.toString(), roles, attributes))
                     } catch (exception: JsonProcessingException) {
                         emitter.error(UnauthorizedException(ErrorCode.USER_NOT_LOGGED_IN))
                     }
