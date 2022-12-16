@@ -7,6 +7,7 @@ import cc.rits.membership.console.paymaster.enums.PurchaseRequestStatus
 import cc.rits.membership.console.paymaster.exception.ErrorCode
 import cc.rits.membership.console.paymaster.exception.InternalServerErrorException
 import cc.rits.membership.console.paymaster.factory.UserFactory
+import cc.rits.membership.console.paymaster.infrastructure.data.entity.PurchaseRequestEntity
 import cc.rits.membership.console.paymaster.util.AuthUtil
 import jakarta.inject.Singleton
 import java.util.*
@@ -18,6 +19,21 @@ class PurchaseRequestRepositoryImpl(
     private val userFactory: UserFactory,
     private val authUtil: AuthUtil
 ) : PurchaseRequestRepository {
+    override fun insert(purchaseRequestModel: PurchaseRequestModel) {
+        val purchaseRequestEntity = PurchaseRequestEntity(
+            id = purchaseRequestModel.id,
+            name = purchaseRequestModel.name,
+            description = purchaseRequestModel.description,
+            price = purchaseRequestModel.price,
+            quantity = purchaseRequestModel.quantity,
+            url = purchaseRequestModel.url,
+            status = purchaseRequestModel.status.id,
+            requestedBy = purchaseRequestModel.requestedBy!!.id,
+            requestedAt = purchaseRequestModel.requestedAt
+        )
+
+        purchaseRequestQuery.save(purchaseRequestEntity)
+    }
 
     override fun findById(id: UUID): PurchaseRequestModel? {
         return purchaseRequestQuery.findById(id)?.let {

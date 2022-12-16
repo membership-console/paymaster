@@ -11,7 +11,7 @@ class PurchaseRequestModel(
     /**
      * 購入申請ID
      */
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
 
     /**
      * 申請品名
@@ -51,6 +51,6 @@ class PurchaseRequestModel(
     /**
      * 申請日時
      */
-    val requestedAt: LocalDateTime
+    val requestedAt: LocalDateTime = LocalDateTime.now()
 
 )

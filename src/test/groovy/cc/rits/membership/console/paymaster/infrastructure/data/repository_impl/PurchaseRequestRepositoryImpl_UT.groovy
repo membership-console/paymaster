@@ -5,6 +5,8 @@ import cc.rits.membership.console.paymaster.client.IAMClient
 import cc.rits.membership.console.paymaster.client.IAMClientImpl
 import cc.rits.membership.console.paymaster.client.response.UserGroupResponse
 import cc.rits.membership.console.paymaster.client.response.UserInfoResponse
+import cc.rits.membership.console.paymaster.domain.model.PurchaseRequestModel
+import cc.rits.membership.console.paymaster.domain.model.UserModel
 import cc.rits.membership.console.paymaster.domain.repository.PurchaseRequestRepository
 import cc.rits.membership.console.paymaster.enums.PurchaseRequestStatus
 import cc.rits.membership.console.paymaster.enums.UserRole
@@ -16,6 +18,8 @@ import io.micronaut.test.annotation.MockBean
 import jakarta.inject.Inject
 import reactor.core.publisher.Mono
 import spock.lang.Shared
+
+import java.time.LocalDateTime
 
 /**
  * 購入申請リポジトリの単体テスト
@@ -49,6 +53,28 @@ class PurchaseRequestRepositoryImpl_UT extends BaseDatabaseSpec {
 
     def setup() {
         this.tokenResponse = new TokenResponse("", "")
+    }
+
+    def "insert: 購入申請を登録できる"() {
+        given:
+        final userModel = new UserModel(1, "", "", 2022, [UserRole.PAYMASTER_ADMIN])
+        final purchaseRequestModel =  new PurchaseRequestModel(
+            UUID.randomUUID(), "", "", 1000, 1, "", PurchaseRequestStatus.PENDING_APPROVAL, userModel, LocalDateTime.now()
+        )
+
+        when:
+        this.sut.insert(purchaseRequestModel)
+
+        then:
+        final result = sql.firstRow("SELECT * FROM purchase_request")
+        result.id == purchaseRequestModel.id
+        result.name == purchaseRequestModel.name
+        result.description == purchaseRequestModel.description
+        result.price == purchaseRequestModel.price
+        result.quantity == purchaseRequestModel.quantity
+        result.url == purchaseRequestModel.url
+        result.status == purchaseRequestModel.status.id
+        result.requested_by == purchaseRequestModel.requestedBy.id
     }
 
     def "findById: idから購入申請を取得できる"() {

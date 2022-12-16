@@ -8,6 +8,7 @@ import java.util.*
 
 @JdbcRepository(dialect = Dialect.POSTGRES)
 abstract class PurchaseRequestQuery : GenericRepository<PurchaseRequestEntity, UUID> {
+    abstract fun save(purchaseRequestEntity: PurchaseRequestEntity)
 
     abstract fun findById(id: UUID): PurchaseRequestEntity?
 
