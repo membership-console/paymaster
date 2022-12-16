@@ -8,6 +8,11 @@ import java.util.*
  */
 interface PurchaseRequestRepository {
     /**
+     * 購入申請を登録
+     */
+    fun insert(purchaseRequestModel: PurchaseRequestModel)
+
+    /**
      * idから購入申請を取得
      */
     fun findById(id: UUID): PurchaseRequestModel?

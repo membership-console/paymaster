@@ -1,6 +1,5 @@
 package cc.rits.membership.console.paymaster.infrastructure.data.entity
 
-import io.micronaut.data.annotation.GeneratedValue
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import java.time.LocalDateTime
@@ -9,7 +8,6 @@ import java.util.*
 @MappedEntity(value = "purchase_request")
 data class PurchaseRequestEntity(
     @Id
-    @GeneratedValue
     val id: UUID,
 
     val name: String,

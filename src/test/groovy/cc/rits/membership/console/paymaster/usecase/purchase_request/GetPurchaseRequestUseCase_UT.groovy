@@ -39,7 +39,7 @@ class GetPurchaseRequestUseCase_UT extends BaseSpec {
         result == purchaseRequestModel
     }
 
-    def "存在しない場合は404エラー"() {
+    def "handle: 存在しない場合は404エラー"() {
         given:
         final id = UUID.randomUUID()
 
